@@ -78,14 +78,11 @@ public class MyQuery {
     	//for(int i = 0; i < distinctStudents.size(); i ++) {
     	// 	System.out.println(distinctStudents.get(i));
     	//}
+    	QueryTable GPA = new QueryTable();
     	
-    	for(int i = 0; i < distinctStudents.size(); i ++) {
-    		for(int j = 0; j < table1.getRowCount(); j ++) {
-    			if(distinctStudents.get(i).equals(table1.getRow(j).getColumn(1))) {
-    				
-    			}
-    		}
-    	}
+    	//GPA = sum(numerical grade * credits) / sum(credits)
+    	
+    	
     	
     	
     }

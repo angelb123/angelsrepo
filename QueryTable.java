@@ -8,6 +8,16 @@ public class QueryTable {
 	private LinkedList<QueryRowResult> results = new LinkedList<QueryRowResult>();
 	private int columnCount;
 	private int rowCount = 0;
+	
+	public QueryTable() {
+		
+	}
+	
+	public void add(QueryRowResult row) {
+		results.add(row);
+		this.rowCount ++;
+	}
+	
 	public QueryTable(ResultSet setResult) throws SQLException{
 		
 		ResultSetMetaData metaData = (ResultSetMetaData) setResult.getMetaData();
