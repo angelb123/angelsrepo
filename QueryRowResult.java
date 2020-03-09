@@ -18,6 +18,7 @@ public class QueryRowResult{
 	}
 	public void printRow() {
 		for(int i = 0; i < column.size(); i ++) {
+			
 			System.out.print(column.get(i) + " ");
 		}
 		System.out.println(" ");

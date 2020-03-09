@@ -265,17 +265,53 @@ public class MyQuery {
 
     public void printBusyInstructor() throws IOException, SQLException{
 		   System.out.println("******** Query 3 ********");
-		   System.out.println("_name_");
+		   System.out.println("");
+		   System.out.println("NAME");
+		   System.out.println("-----------------");
 		   QueryTable q3 = findBusyInstructor();
 		   q3.printTable();
+		   System.out.println("");
     }
 
-    public void findPrereq() throws SQLException{
-
+    public QueryTable findPrereq() throws SQLException{
+    	String query = "SELECT title, prereq_id \n" + 
+    			"FROM course left outer join prereq using (course_id)";
+    	resultSet = statement.executeQuery(query);
+    	
+    	QueryTable table = new QueryTable(resultSet);
+    	
+    	query = "select course_id, title from course";
+    	resultSet = statement.executeQuery(query);
+    	QueryTable table2 = new QueryTable(resultSet);
+    	
+    	
+    	for(int i = 0; i < table.getRowCount(); i++) {
+    		for(int j = 0; j < table2.getRowCount(); j++) {
+    			if(table.getRow(i).getColumn(2) != null && table.getRow(i).getColumn(2).equals(table2.getRow(j).getColumn(1)) ) {
+    					table.getRow(i).setColumn(2, table2.getRow(j).getColumn(2));
+    			}
+    		}
+    	}
+    	
+    	return table;
     }
 
     public void printPrereq() throws IOException, SQLException{
 		   System.out.println("******** Query 4 ********");
+		   QueryTable q4 = findPrereq();
+		
+		   System.out.printf("%-30s %-20s %n", "COURSE", "PREREQ");
+		   System.out.println("---------------------------------------------------------");
+		   
+		   for(int i = 0; i < q4.getRowCount(); i ++) {
+			   if(q4.getRow(i).getColumn(2) == null) {
+				   System.out.println(q4.getRow(i).getColumn(1));
+			   }
+			   else {
+			   System.out.printf( "%-30s %-20s %n", q4.getRow(i).getColumn(1), q4.getRow(i).getColumn(2));
+			   }
+			   }
+		   System.out.println("");
     }
 
     public void updateTable() throws SQLException{

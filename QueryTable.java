@@ -48,11 +48,31 @@ public class QueryTable {
 		
 		for(int i = 0; i < rowCount; i ++) {
 			for(int j = 1; j <= columnCount; j++) {
+				
 				System.out.print(results.get(i).getColumn(j) + " ");
 			}
 			System.out.println("");
 		}
 	}
+	
+	public void printTableNoNull() {
+		if(this.rowCount != 0) {
+			this.columnCount = results.get(0).getColumnCount();
+		}
+		
+		for(int i = 0; i < rowCount; i ++) {
+			for(int j = 1; j <= columnCount; j++) {
+				if(results.get(i).getColumn(j) == null) {
+					System.out.print(" ");
+				}
+				else {
+				System.out.print(results.get(i).getColumn(j) + " ");
+				}
+			}
+			System.out.println("");
+		}
+	}
+	
 	public int getRowCount() {
 		return this.rowCount;
 	}
