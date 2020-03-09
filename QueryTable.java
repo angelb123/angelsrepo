@@ -14,6 +14,7 @@ public class QueryTable {
 	}
 	
 	public void add(QueryRowResult row) {
+		this.columnCount = row.getColumnCount();
 		results.add(row);
 		this.rowCount ++;
 	}
@@ -41,6 +42,9 @@ public class QueryTable {
 	}
 	
 	public void printTable() {
+		if(this.rowCount != 0) {
+			this.columnCount = results.get(0).getColumnCount();
+		}
 		
 		for(int i = 0; i < rowCount; i ++) {
 			for(int j = 1; j <= columnCount; j++) {

@@ -46,12 +46,12 @@ public class MyQuery {
    		}        
     }
     
-    public void findGPAInfo() throws SQLException{
+    public QueryTable findGPAInfo() throws SQLException{
     	String query = "Select ID, grade, credits from course join takes using (course_ID)";
     	resultSet = statement.executeQuery(query);
     	
     	QueryTable table1 = new QueryTable(resultSet);
-    	table1.printTable();
+    	
     	
     	//step 1: convert letter grade to numeric grade
     	for(int i = 0; i < table1.getRowCount(); i++) {
@@ -61,10 +61,10 @@ public class MyQuery {
     			
     		}	
     	}
+    //	table1.printTable();
+    	//****************************************************************
     	
-    	
-    	
-    	//set 2: calculate GPA
+    	//step 2: calculate GPA
     	
     	LinkedList<String> distinctStudents = new LinkedList<String>();
     	
@@ -74,18 +74,61 @@ public class MyQuery {
     		distinctStudents.add(resultSet.getString(1));
     	}
     	 
-    	//System.out.println("Distint students will now print");
-    	//for(int i = 0; i < distinctStudents.size(); i ++) {
-    	// 	System.out.println(distinctStudents.get(i));
-    	//}
-    	QueryTable GPA = new QueryTable();
+    	
+    	//For each distinct student, 
     	
     	//GPA = sum(numerical grade * credits) / sum(credits)
     	
+    	QueryTable gpas = new QueryTable();
     	
-    	
-    	
+    	for(int i = 0; i < distinctStudents.size(); i ++) {
+    		double sumCredits = 0;
+    		double sumNumCred = 0;
+    		
+    		for(int j = 0; j < table1.getRowCount(); j ++) {
+    			
+    			if(distinctStudents.get(i).equals(table1.getRow(j).getColumn(1)) && table1.getRow(j).getColumn(2) != null) {
+    				sumCredits += Double.valueOf(table1.getRow(j).getColumn(3));
+    				sumNumCred += Double.valueOf(table1.getRow(j).getColumn(2)) * Double.valueOf(table1.getRow(j).getColumn(3));
+    			}	
+    		}
+    		
+    		double gpa = sumNumCred/sumCredits;
+    		String student = distinctStudents.get(i);
+    		
+    		//System.out.println(student + " " + gpa);
+    		
+    		QueryRowResult row = new QueryRowResult();
+    		row.addColumn(student);
+    		row.addColumn(Double.toString(gpa));
+    		gpas.add(row);
+    		
+    	}
+    		query = "SELECT DISTINCT ID, name from student join takes using (ID)";
+    		
+    		resultSet = statement.executeQuery(query);
+    		QueryTable namesIds = new QueryTable(resultSet);
+    		//namesIds.printTable();
+    		
+    		for(int i = 0; i < namesIds.getRowCount(); i ++) {
+    			for(int j = 0; j < gpas.getRowCount(); j++) {
+    				if(namesIds.getRow(i).getColumn(1).equals(gpas.getRow(j).getColumn(1))) {
+    					
+    					String tmpGPA = gpas.getRow(j).getColumn(2);
+    					double d = Double.valueOf(tmpGPA);
+    					String s = String.format("%f", d);
+    					
+    					namesIds.getRow(i).addColumn(s);
+    					
+    				//	System.out.println(namesIds.getRow(j).getColumn(3));
+
+    				}
+    			}
+    		}
+    		System.out.println(namesIds.getRow(1).getColumn(3));
+    		return namesIds;
     }
+    
     public double convertGrade(String grade) {
     	if(grade.equals("A")) {
     		return 4.0;
@@ -128,6 +171,8 @@ public class MyQuery {
     
     public void printGPAInfo() throws IOException, SQLException{
 		   System.out.println("******** Query 1 ********");
+		   QueryTable q1 = findGPAInfo();
+		   q1.printTable();
 		 
     }
     
