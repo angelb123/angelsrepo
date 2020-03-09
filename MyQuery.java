@@ -315,11 +315,37 @@ public class MyQuery {
     }
 
     public void updateTable() throws SQLException{
+    	String query = "DROP TEMPORARY TABLE if exists updateTable";
+    			statement.execute(query);
+    	
+    	query = "create TEMPORARY table updateTable select * from student";
+    	
+    	statement.execute(query);
+    	
+    	
+    	query =	"UPDATE updateTable T1 SET tot_cred = (SELECT SUM(credits) FROM takes T2 JOIN course USING (course_id) WHERE T1.ID = T2.ID AND grade <> 'F');"; 
+    	statement.execute(query);
+    	
+    	query = "UPDATE updateTable SET tot_cred = 0 WHERE tot_cred IS NULL";
+    	statement.execute(query);
+    	
+    	resultSet = statement.executeQuery("select * from updateTable");
+    	
+    	
+    	//table.printTable();
+    	
 
     }
 
     public void printUpdatedTable() throws IOException, SQLException{
 		   System.out.println("******** Query 5 ********");
+		   System.out.printf("%-6s %-10s %-12s %-4s %n", "ID", "NAME", "DEPARTMENT", "CREDITS");
+		   System.out.println("-------------------------------------------");
+		   while(resultSet.next()) {
+		   System.out.printf("%-6s %-10s %-12s %-4s %n", resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
+		   
+		   }
+		   
     }
 	
 	 public void findHeadCounts() throws SQLException{
