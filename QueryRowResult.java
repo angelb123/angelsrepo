@@ -3,7 +3,6 @@ import java.util.LinkedList;
 public class QueryRowResult{
 	
 	private LinkedList<String> column = new LinkedList<String>();
-	
 	public void addColumn(String result){
 		column.add(result);
 	}
@@ -18,10 +17,12 @@ public class QueryRowResult{
 		return column.size();
 	}
 	public void printRow() {
-		
 		for(int i = 0; i < column.size(); i ++) {
 			System.out.print(column.get(i) + " ");
 		}
 		System.out.println(" ");
+	}
+	public void deleteColumn(int columnNum) {
+		column.remove(columnNum -1);
 	}
 }

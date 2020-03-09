@@ -177,7 +177,7 @@ public class MyQuery {
     }
     
 
-    public void findMorningCourses() throws SQLException{
+    public QueryTable findMorningCourses() throws SQLException{
     	String morningSectionsQ = "select distinct course_id, sec_id, title, semester, year, instructor.name from takes join section using (course_id, sec_id, semester, year) join time_slot using (time_slot_id)\n" + 
     			"join teaches using (course_id, sec_id, semester, year) join instructor on teaches.ID = instructor.ID join course using (course_id)\n" + 
     			"\n" + 
@@ -213,21 +213,61 @@ public class MyQuery {
     		}
     		morningSectionsTable.getRow(i).addColumn(Integer.toString(enrollments));
     	}
-    	morningSectionsTable.printTable();
+    	return morningSectionsTable;
     	
     }
     
 
     public void printMorningCourses() throws IOException, SQLException{
 	   	System.out.println("******** Query 2 ********");
+	   	QueryTable q2 = findMorningCourses();
+	   //	q2.printTable();
     }
 
-    public void findBusyInstructor() throws SQLException{
- 
+    public QueryTable findBusyInstructor() throws SQLException{
+    	String query = "select count(*), ID from teaches join instructor using (ID) group by ID";
+    	resultSet = statement.executeQuery(query);
+    	QueryTable table = new QueryTable(resultSet);
+    	
+    	QueryTable busiest = new QueryTable();
+    	
+    	//find most taught number
+    	int max = 0;
+    	for(int i = 0; i < table.getRowCount(); i ++) {
+    		if(Integer.valueOf(table.getRow(i).getColumn(1)) > max) {
+    			max = Integer.valueOf(table.getRow(i).getColumn(1));
+    		}
+    	}
+    	
+    	for(int i = 0; i < table.getRowCount(); i++) {
+    		if(Integer.valueOf(table.getRow(i).getColumn(1)) == max) {
+    			QueryRowResult temp = new QueryRowResult();
+    			temp.addColumn(table.getRow(i).getColumn(2));
+    			busiest.add(temp);
+    		}
+    	}
+    	//busiest.printTable();
+    	query = "select ID, name from instructor";
+    	resultSet = statement.executeQuery(query);
+    	QueryTable instructors = new QueryTable(resultSet);
+    	//instructors.printTable();
+    	
+    	for(int i = 0; i < busiest.getRowCount(); i ++) {
+    		for(int j = 0; j < instructors.getRowCount(); j++) {
+    			if(busiest.getRow(i).getColumn(1).equals(instructors.getRow(j).getColumn(1))) {
+    				busiest.getRow(i).addColumn(instructors.getRow(j).getColumn(2));
+    				busiest.getRow(i).deleteColumn(1);
+    			}
+    		}
+    	}
+    	return busiest;
     }
 
     public void printBusyInstructor() throws IOException, SQLException{
 		   System.out.println("******** Query 3 ********");
+		   System.out.println("_name_");
+		   QueryTable q3 = findBusyInstructor();
+		   q3.printTable();
     }
 
     public void findPrereq() throws SQLException{
