@@ -171,8 +171,10 @@ public class MyQuery {
     
     public void printGPAInfo() throws IOException, SQLException{
 		   System.out.println("******** Query 1 ********");
+		   System.out.println("");
 		   QueryTable q1 = findGPAInfo();
-		//   q1.printTable();
+		   q1.printTable();
+		   System.out.println("");
 		 
     }
     
@@ -220,8 +222,10 @@ public class MyQuery {
 
     public void printMorningCourses() throws IOException, SQLException{
 	   	System.out.println("******** Query 2 ********");
+	   	System.out.println("");
 	   	QueryTable q2 = findMorningCourses();
-	   //	q2.printTable();
+	   	q2.printTable();
+	   	System.out.println("");
     }
 
     public QueryTable findBusyInstructor() throws SQLException{
@@ -298,6 +302,7 @@ public class MyQuery {
 
     public void printPrereq() throws IOException, SQLException{
 		   System.out.println("******** Query 4 ********");
+		   System.out.println("");
 		   QueryTable q4 = findPrereq();
 		
 		   System.out.printf("%-30s %-20s %n", "COURSE", "PREREQ");
@@ -332,19 +337,19 @@ public class MyQuery {
     	resultSet = statement.executeQuery("select * from updateTable");
     	
     	
-    	//table.printTable();
     	
 
     }
 
     public void printUpdatedTable() throws IOException, SQLException{
 		   System.out.println("******** Query 5 ********");
+		   System.out.println("");
 		   System.out.printf("%-6s %-10s %-12s %-4s %n", "ID", "NAME", "DEPARTMENT", "CREDITS");
 		   System.out.println("-------------------------------------------");
 		   while(resultSet.next()) {
 		   System.out.printf("%-6s %-10s %-12s %-4s %n", resultSet.getString(1), resultSet.getString(2), resultSet.getString(3), resultSet.getString(4));
-		   
 		   }
+		   System.out.println("");
 		   
     }
 	
