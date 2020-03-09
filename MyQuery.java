@@ -125,7 +125,7 @@ public class MyQuery {
     				}
     			}
     		}
-    		System.out.println(namesIds.getRow(1).getColumn(3));
+    		//System.out.println(namesIds.getRow(1).getColumn(3));
     		return namesIds;
     }
     
@@ -172,14 +172,51 @@ public class MyQuery {
     public void printGPAInfo() throws IOException, SQLException{
 		   System.out.println("******** Query 1 ********");
 		   QueryTable q1 = findGPAInfo();
-		   q1.printTable();
+		//   q1.printTable();
 		 
     }
     
 
     public void findMorningCourses() throws SQLException{
-
+    	String morningSectionsQ = "select distinct course_id, sec_id, title, semester, year, instructor.name from takes join section using (course_id, sec_id, semester, year) join time_slot using (time_slot_id)\n" + 
+    			"join teaches using (course_id, sec_id, semester, year) join instructor on teaches.ID = instructor.ID join course using (course_id)\n" + 
+    			"\n" + 
+    			"where start_hr <=12 order by course_id";
+    	resultSet = statement.executeQuery(morningSectionsQ);
+    	QueryTable morningSectionsTable = new QueryTable(resultSet);
+    	
+    	String takesQ = "select course_id, sec_id, semester, year from takes";
+    	resultSet = statement.executeQuery(takesQ);
+    	QueryTable takesTable = new QueryTable(resultSet);
+    	//takesTable.printTable();
+    	//morningSectionsTable.printTable();
+    	
+    	for(int i = 0; i < morningSectionsTable.getRowCount(); i ++) {
+    		int enrollments = 0;
+    		for(int j = 0; j < takesTable.getRowCount(); j++) {
+    			
+    			String course_id1 = morningSectionsTable.getRow(i).getColumn(1);
+    			String sec_id1 = morningSectionsTable.getRow(i).getColumn(2);
+    			String semester1 = morningSectionsTable.getRow(i).getColumn(4);
+    			String year1 = morningSectionsTable.getRow(i).getColumn(5);
+    			
+    			String course_id2 = takesTable.getRow(j).getColumn(1);
+    			String sec_id2 = takesTable.getRow(j).getColumn(2);
+    			String semester2 = takesTable.getRow(j).getColumn(3);
+    			String year2 = takesTable.getRow(j).getColumn(4);
+    			
+    			if(course_id1.equals(course_id2) && sec_id1.equals(sec_id2) && semester1.equals(semester2) && year1.equals(year2)) {
+    				enrollments ++;
+    			}
+    	
+    		
+    		}
+    		morningSectionsTable.getRow(i).addColumn(Integer.toString(enrollments));
+    	}
+    	morningSectionsTable.printTable();
+    	
     }
+    
 
     public void printMorningCourses() throws IOException, SQLException{
 	   	System.out.println("******** Query 2 ********");
