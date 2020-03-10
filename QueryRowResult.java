@@ -1,3 +1,8 @@
+//ANGEL BERMUDEZ
+//CSCD 327 WINTER 2020
+//DR. LI
+
+
 import java.util.LinkedList;
 
 public class QueryRowResult{

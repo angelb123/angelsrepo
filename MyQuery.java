@@ -1,6 +1,11 @@
 /*****************************
 Query the University Database
 *****************************/
+
+//ANGEL BERMUDEZ
+//CSCD 327 WINTER 2020
+//DR. LI
+
 import java.io.*;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -75,7 +80,7 @@ public class MyQuery {
     	}
     	 
     	
-    	//For each distinct student, 
+    	//For each distinct student, calculate GPA
     	
     	//GPA = sum(numerical grade * credits) / sum(credits)
     	
@@ -212,6 +217,7 @@ public class MyQuery {
     			String semester2 = takesTable.getRow(j).getColumn(3);
     			String year2 = takesTable.getRow(j).getColumn(4);
     			
+    			//if any student takes a morning class, add +1 to the respective section
     			if(course_id1.equals(course_id2) && sec_id1.equals(sec_id2) && semester1.equals(semester2) && year1.equals(year2)) {
     				enrollments ++;
     			}

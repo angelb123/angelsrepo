@@ -1,7 +1,14 @@
+//ANGEL BERMUDEZ
+//CSCD 327 WINTER 2020
+//DR. LI
+
+
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.LinkedList;
 import com.mysql.cj.jdbc.result.ResultSetMetaData;
+
 
 public class QueryTable {
 	
