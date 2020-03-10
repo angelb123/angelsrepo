@@ -173,7 +173,12 @@ public class MyQuery {
 		   System.out.println("******** Query 1 ********");
 		   System.out.println("");
 		   QueryTable q1 = findGPAInfo();
-		   q1.printTable();
+		   System.out.printf("%-6s %-9s %-8s %n", "ID", "NAME", "GPA");
+		   System.out.println("-------------------------");
+		   for(int i = 0; i < q1.getRowCount(); i ++) {
+			   System.out.printf("%-6s %-9s %-8s %n", q1.getRow(i).getColumn(1), q1.getRow(i).getColumn(2), q1.getRow(i).getColumn(3));
+		   }
+		   
 		   System.out.println("");
 		 
     }
@@ -309,7 +314,7 @@ public class MyQuery {
 		   System.out.println("");
 		   QueryTable q4 = findPrereq();
 		
-		   System.out.printf("%-30s %-20s %n", "COURSE", "PREREQ");
+		   System.out.printf("%-30s %-18s %n", "COURSE", "PREREQ");
 		   System.out.println("---------------------------------------------------------");
 		   
 		   for(int i = 0; i < q4.getRowCount(); i ++) {
@@ -317,7 +322,7 @@ public class MyQuery {
 				   System.out.println(q4.getRow(i).getColumn(1));
 			   }
 			   else {
-			   System.out.printf( "%-30s %-20s %n", q4.getRow(i).getColumn(1), q4.getRow(i).getColumn(2));
+			   System.out.printf( "%-30s %-18s %n", q4.getRow(i).getColumn(1), q4.getRow(i).getColumn(2));
 			   }
 			   }
 		   System.out.println("");
@@ -359,6 +364,7 @@ public class MyQuery {
 	
 	 public void findHeadCounts() throws SQLException{
 		  System.out.println("******** Query 6 ********");	
+		  System.out.println();
 		  Scanner input = new Scanner(System.in);
 		  System.out.println("Please enter the department name: ");
 		  String department = input.nextLine();// <--------Oh this little line almost drove me crazy.. Had .next()
@@ -382,7 +388,7 @@ public class MyQuery {
 		  System.out.println(department + "has " + instructorCount + " instructors.");
 		  System.out.println(department + "has " + studentCount + " students.");
 		  
-		//  String studentCount = 
+		  System.out.println();
 		 
 	 }
     
