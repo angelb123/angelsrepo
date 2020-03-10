@@ -224,8 +224,12 @@ public class MyQuery {
 	   	System.out.println("******** Query 2 ********");
 	   	System.out.println("");
 	   	QueryTable q2 = findMorningCourses();
-	   	q2.printTable();
-	   	System.out.println("");
+	   	System.out.printf("%-9s %-8s %-30s %-8s %-5s %-10s %-2s %n", "COURSE_ID", "SEC_ID", "TITLE", "QUARTER", "YEAR", "INSTRUCTOR", "ENROLLMENTS");
+	   	System.out.println("---------------------------------------------------------------------------------------");
+	   	for(int i = 0; i < q2.getRowCount(); i ++) {
+	   		
+	   		System.out.printf("%-9s %-8s %-30s %-8s %-5s %-10s %-2s %n", q2.getRow(i).getColumn(1), q2.getRow(i).getColumn(2), q2.getRow(i).getColumn(3), q2.getRow(i).getColumn(4),q2.getRow(i).getColumn(5), q2.getRow(i).getColumn(6), q2.getRow(i).getColumn(7));
+	   	}
     }
 
     public QueryTable findBusyInstructor() throws SQLException{
@@ -271,7 +275,7 @@ public class MyQuery {
 		   System.out.println("******** Query 3 ********");
 		   System.out.println("");
 		   System.out.println("NAME");
-		   System.out.println("-----------------");
+		   System.out.println("----------");
 		   QueryTable q3 = findBusyInstructor();
 		   q3.printTable();
 		   System.out.println("");
