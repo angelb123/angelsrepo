@@ -359,6 +359,31 @@ public class MyQuery {
 	
 	 public void findHeadCounts() throws SQLException{
 		  System.out.println("******** Query 6 ********");	
+		  Scanner input = new Scanner(System.in);
+		  System.out.println("Please enter the department name: ");
+		  String department = input.nextLine();// <--------Oh this little line almost drove me crazy.. Had .next()
+		  
+		  String s = "\"" + department + "\"";
+		  String query = "CALL getNumbers("+ s + ",@student_count, @instructor_count)";
+		  
+		  statement.executeQuery(query);
+		  
+		  query = "SELECT @student_count";
+		  resultSet = statement.executeQuery(query);
+		  resultSet.next();
+		  
+		  String studentCount = resultSet.getString(1);
+		  query = "SELECT @instructor_count";
+		  resultSet = statement.executeQuery(query);
+		  resultSet.next();
+		  
+		  String instructorCount = resultSet.getString(1);
+		  
+		  System.out.println(department + "has " + instructorCount + " instructors.");
+		  System.out.println(department + "has " + studentCount + " students.");
+		  
+		//  String studentCount = 
+		 
 	 }
     
     
